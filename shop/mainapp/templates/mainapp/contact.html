@@ -22,7 +22,7 @@
 					<h4>{{ place.city }}</h4>
 					<div class="contacts">
 						<h5>Телефон</h5>
-						<p>{{ place.phone }}</p>
+						<p>{{ place.phone|add:"'+skype'" }}</p>
 					</div>
 					<div class="contacts">
 						<h5>Email</h5>
