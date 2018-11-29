@@ -1,12 +1,20 @@
-{"moscow": {'city' : 'moscow', 
-        'phone' : '8(521)346-95-78', 
-        'email' : 'moscow@mail.ru',  
-        'adress' : 'volnaay 97'},
-    "ekaterinburg": {'city' : 'ekaterinburg', 
-        'phone' : '8(198)963-58-91', 
-        'email' : 'ekaterinburg@mail.ru',  
-        'adress' : 'volnaay 98'},
-    "kalinin": {'city' : 'kalinin', 
-            'phone' : '8(831)950-00-32', 
-            'email' : 'kalinin@mail.ru',  
-            'adress' : 'volnaay 99'}}
+[
+    {
+        "city" : "moscow", 
+        "phone" : "8(521)346-95-78", 
+        "email" : "moscow@mail.ru",  
+        "adress" : "volnaay 97"
+    },
+    {
+        "city" : "ekaterinburg", 
+        "phone" : "8(198)963-58-91", 
+        "email" : "ekaterinburg@mail.ru",  
+        "adress" : "volnaay 98"
+    },
+    {
+        "city" : "kalinin", 
+        "phone" : "8(831)950-00-32", 
+        "email" : "kalinin@mail.ru",  
+        "adress" : "volnaay 99"
+        }
+]
