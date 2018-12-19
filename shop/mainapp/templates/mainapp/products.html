@@ -17,56 +17,52 @@
 		<div class="details">
 			<div class="links clearfix">
 				<ul class="links-menu">
-					<li><a href="#" class="active">все</a></li>
-					<li><a href="#">дом</a></li>
-					<li><a href="#">офис</a></li>
-					<li><a href="#">модерн</a></li>
-					<li><a href="#">{{data}}</a></li>
+					<li><a href="{% url 'products' %}" class="{% if request.resolver_match.url_name == 'products' %}active{% endif %}">все</a></li>
+					{% for category in categories %}
+						<li><a href="{% url category.name %}" class="
+							{% if request.resolver_match.url_name == category.name %}
+								active
+							{% endif %}">
+							{{category.name}}
+							</a></li>
+					{% endfor %}
 				</ul>
 			</div>
-
-			<div class="details-products">
-				<div class="details-slider">
-					<div class="slider-product">
-						<img src="/static/img/slider1.jpg">
-					</div>
-					<div class="slider-control">
-						<div class="block">
-							<a href="#"><img src="/static/img/controll.jpg" alt="">
-								<div class="text"></div>
-							</a>
+			<div class="products_block">
+				{% for product in products %}
+					{% if request.resolver_match.url_name == product.category.name %}
+						<div class="products_box">
+							<div  class="products_box_img">
+								<img src="{{product.image.url}}" alt="">
+							</div>
+							<div  class="products_box_name">
+								{{product.name}}
+							</div>
+							<div  class="products_box_description">
+								{{product.descrition}}
+							</div>
+							<div class="products_box_price">
+								{{product.price}}
+							</div>
 						</div>
-						<div class="block">
-							<a href="#"><img src="/static/img/controll1.jpg" alt="">
-								<div class="text"></div>
-							</a>
+					{% elif request.resolver_match.url_name == 'products' %}
+						<div class="products_box">
+							<div  class="products_box_img">
+								<img src="{{product.image.url}}" alt="">
+							</div>
+							<div  class="products_box_name">
+								{{product.name}}
+							</div>
+							<div  class="products_box_description">
+								{{product.descrition}}
+							</div>
+							<div class="products_box_price">
+								{{product.price}}
+							</div>
 						</div>
-						<div class="block">
-							<a href="#"><img src="/static/img/controll2.jpg" alt="">
-								<div class="text"></div>
-							</a>
-						</div>
-					</div>
-				</div>
-
-				<div class="description">
-					<h3 class="big-bold">Отличный стул</h3>
-					<h3 class="red">горячее предложение</h3>
-					<p class="price"> 2585.9 <span>руб</span></p>
-					<a href="#" class="red-button">
-						заказать <i class="fa fa-chevron-right" aria-hidden="true"></i>
-					</a>
-					<div class="description-text">
-						<p>Расположитесь комфортно.</p> 
-						<p>Отличное качество материалов
-						позволит вам это.</p> 
-						<p>Различные цвета</p>
-						<p>высочайший уровень
-						эргономики и прочность.</p>
-					</div>
-				</div>
+					{% endif %}
+				{% endfor %}
 			</div>
-
 			<div class="related">
 				<div class="title clearfix">
 					<h2>Похожие продукты</h2>

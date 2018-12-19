@@ -2,6 +2,12 @@ from django.shortcuts import render
 from shop.settings import STATICFILES_DIRS
 import json
 import os
+from .models import Category, Product
+from django.urls import reverse
+
+products = Product.objects.all()
+categories = Category.objects.all()
+print(products, categories)
 
 
 # Create your views here.
@@ -16,4 +22,10 @@ def contact_view(request):
     return render(request, 'mainapp/contact.html', {"continfo": cont_info,})
 
 def products_view(request):
-    return render(request, 'mainapp/products.html')
+
+    my_url = reverse('products')
+    print('path_to_json: СМОТРИ СЮДА', my_url)
+
+    products_content = {'products' : products, 'categories' : categories}
+    return render(request, 'mainapp/products.html', products_content)
+    
