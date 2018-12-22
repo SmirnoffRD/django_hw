@@ -7,7 +7,6 @@ from django.urls import reverse
 
 products = Product.objects.all()
 categories = Category.objects.all()
-print(products, categories)
 
 
 # Create your views here.
@@ -23,9 +22,8 @@ def contact_view(request):
 
 def products_view(request):
 
-    my_url = reverse('products')
-    print('path_to_json: СМОТРИ СЮДА', my_url)
 
+    print('обновление корзины')
     products_content = {'products' : products, 'categories' : categories}
     return render(request, 'mainapp/products.html', products_content)
     
