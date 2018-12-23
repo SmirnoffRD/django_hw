@@ -5,13 +5,21 @@ import os
 from .models import Category, Product
 from django.urls import reverse
 
-products = Product.objects.all()
 categories = Category.objects.all()
+
+
+
 
 
 # Create your views here.
 def main_view(request):
-    return render(request, 'mainapp/index.html')
+    content = {
+        'categories': categories
+    }
+    for cat in categories:
+        print('nnnnn', cat.pk)
+    
+    return render(request, 'mainapp/index.html', content)
 
 def contact_view(request):
     path = os.path.join(STATICFILES_DIRS[0], 'contacts.json')
@@ -20,10 +28,22 @@ def contact_view(request):
 
     return render(request, 'mainapp/contact.html', {"continfo": cont_info,})
 
-def products_view(request):
+def products_view(request, pk):
+    print(pk)
+    print(type(pk))
+    if pk == "0":
+        products = Product.objects.all()
+        category = {'name': 'All'}
+    else:
+        category = Category.objects.get(pk=pk)
+        products = Product.objects.filter(category=category)
+    content = {
+        'products': products,
+        'category': category,
+        'categories': categories
+    }
 
 
     print('обновление корзины')
-    products_content = {'products' : products, 'categories' : categories}
-    return render(request, 'mainapp/products.html', products_content)
+    return render(request, 'mainapp/products.html', content)
     

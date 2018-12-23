@@ -1,5 +1,5 @@
 {% extends "mainapp/base.html" %}
-
+{{category|length}}
 {% block title %}
 Каталог
 {% endblock %}
@@ -17,50 +17,34 @@
 		<div class="details">
 			<div class="links clearfix">
 				<ul class="links-menu">
-					<li><a href="{% url 'mainapp:products' %}" class="{% if request.resolver_match.url_name == 'products' %}active{% endif %}">все</a></li>
-					{% for category in categories %}
-						<li><a href="{% url 'mainapp:'|add:category.name %}" class="
-							{% if request.resolver_match.url_name == category.name %}
-								active
-							{% endif %}">
-							{{category.name}}
+					<li><a href="{% url 'mainapp:products' pk=0 %}" class="{% if category|length > 0 %} active {% endif %}">все</a></li>
+					{% for cat in categories %}
+						<li><a href="{% url 'mainapp:products' cat.pk %}" class="
+						{% if category.pk == cat.pk %}
+							active
+						{% endif %}
+						">
+							{{cat.name}}
 							</a></li>
 					{% endfor %}
 				</ul>
 			</div>
 			<div class="products_block">
 				{% for product in products %}
-					{% if request.resolver_match.url_name == product.category.name %}
-						<div class="products_box">
-							<div  class="products_box_img">
-								<img src="{{product.image.url}}" alt="">
-							</div>
-							<div  class="products_box_name">
-								{{product.name}}
-							</div>
-							<div  class="products_box_description">
-								{{product.descrition}}
-							</div>
-							<div class="products_box_price">
-								{{product.price}}
-							</div>
+					<div class="products_box">
+						<div  class="products_box_img">
+							<img src="{{product.image.url}}" alt="">
 						</div>
-					{% elif request.resolver_match.url_name == 'products' %}
-						<div class="products_box">
-							<div  class="products_box_img">
-								<img src="{{product.image.url}}" alt="">
-							</div>
-							<div  class="products_box_name">
-								{{product.name}}
-							</div>
-							<div  class="products_box_description">
-								{{product.descrition}}
-							</div>
-							<div class="products_box_price">
-								{{product.price}}
-							</div>
+						<div  class="products_box_name">
+							{{product.name}}
 						</div>
-					{% endif %}
+						<div  class="products_box_description">
+							{{product.descrition}}
+						</div>
+						<div class="products_box_price">
+							{{product.price}}
+						</div>
+					</div>
 				{% endfor %}
 			</div>
 			<div class="related">

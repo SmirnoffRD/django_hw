@@ -25,9 +25,9 @@ class CustomUser_RegistrationForm(UserCreationForm):
             field.widget.attrs['class'] = 'form-control'
             field.help_text = ''
 
-    def clean_age(self):
-        data = self.cleaned_data['password1']
-        if len(data) < 10:
-            raise forms.ValidationError("Слишком короткий пароль")
+    # def clean_age(self):
+    #     data = self.cleaned_data['password1']
+    #     if len(data) < 10:
+    #         raise forms.ValidationError("Слишком короткий пароль")
 
-        return data
+    #     return data

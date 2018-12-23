@@ -23,7 +23,7 @@ from mainapp.views import contact_view, main_view, products_view
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('mainapp.urls', namespace='mainapp')),
-    path('', include('authapp.urls', namespace='authapp')),
+    path('auth/', include('authapp.urls', namespace='authapp')),
 ]
 
 

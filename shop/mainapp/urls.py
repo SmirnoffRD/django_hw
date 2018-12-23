@@ -11,11 +11,8 @@ categories = Category.objects.all()
 urlpatterns = [
     path('', main_view, name='main'),
     path('contacts/', contact_view, name='contacts'),
-    path('products/', products_view, name='products'),
+    path('products/<pk>/', products_view, name='products'),
 ]
 
-if categories:
-    for category in categories:
-        urlpatterns.append(path('products/{}/'.format(category.id), products_view, name='{}'.format(category.name)))
 
 print(urlpatterns)
