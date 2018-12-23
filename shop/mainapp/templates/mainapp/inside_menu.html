@@ -16,5 +16,11 @@
         </a>
     </li>
     <li><a href="{% url 'mainapp:contacts' %}" class="{% if request.resolver_match.url_name == 'contacts' %}active{% endif %}">контакты</a></li>
+    {% if user.is_authenticated %}
+        <li><a href="{% url 'authapp:logout' %}">{{ user.username }}</a></li>
+        <li><a href="{% url 'authapp:logout' %}">Логаут</a></li>
+    {% else %}
+        <li><a href="{% url 'authapp:login' %}">Логин</a></li>
+    {% endif %}
 </ul>
 <a href="#" class="search"></a>
