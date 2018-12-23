@@ -13,6 +13,3 @@ urlpatterns = [
     path('contacts/', contact_view, name='contacts'),
     path('products/<pk>/', products_view, name='products'),
 ]
-
-
-print(urlpatterns)
