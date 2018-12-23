@@ -16,8 +16,6 @@ def main_view(request):
     content = {
         'categories': categories
     }
-    for cat in categories:
-        print('nnnnn', cat.pk)
     
     return render(request, 'mainapp/index.html', content)
 
@@ -29,8 +27,6 @@ def contact_view(request):
     return render(request, 'mainapp/contact.html', {"continfo": cont_info,})
 
 def products_view(request, pk):
-    print(pk)
-    print(type(pk))
     if pk == "0":
         products = Product.objects.all()
         category = {'name': 'All'}
@@ -43,7 +39,5 @@ def products_view(request, pk):
         'categories': categories
     }
 
-
-    print('обновление корзины')
     return render(request, 'mainapp/products.html', content)
     

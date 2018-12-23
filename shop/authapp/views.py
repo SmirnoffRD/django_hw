@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse
-from authapp.forms import CustomUser_LoginForm, CustomUser_RegistrationForm
+from authapp.forms import CustomUser_LoginForm, CustomUser_RegistrationForm, CustomUser_EditForm
 from django.contrib import auth
 # Create your views here.
 
@@ -40,3 +40,18 @@ def registration_view(request):
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect(reverse('mainapp:main'))
+
+def edit_view(request):
+    title = 'Измение профиля'
+    
+    if request.method == 'POST':
+        edit_form = CustomUser_EditForm(request.POST, request.FILES, instance=request.user)
+
+        if edit_form.is_valid():
+            edit_form.save()
+            return HttpResponseRedirect(reverse('authapp:edit'))
+    else:
+        edit_form = CustomUser_EditForm(instance=request.user)
+    
+    content = {'title': title, 'edit_form': edit_form}
+    return render(request, 'authapp/edit.html', content)
