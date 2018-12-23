@@ -8,7 +8,7 @@ from mainapp.models import Category
 
 app_name = 'mainapp'
 
-categories = Category.objects.all()
+# categories = Category.objects.all()
 urlpatterns = [
     path('', main_view, name='main'),
     path('contacts/', contact_view, name='contacts'),
@@ -21,7 +21,7 @@ if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
-for category in categories:
-    urlpatterns.append(path('products/{}/'.format(category.id), products_view, name='{}'.format(category.name)))
+# for category in categories:
+#     urlpatterns.append(path('products/{}/'.format(category.id), products_view, name='{}'.format(category.name)))
 
 print(urlpatterns)
