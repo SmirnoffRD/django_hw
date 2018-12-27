@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from shop.settings import STATICFILES_DIRS
 import json
 import os
@@ -25,11 +25,11 @@ def contact_view(request):
 def products_view(request, pk):
     categories = Category.objects.all()
     if pk == "0":
-        products = Product.objects.all()
-        category = {'name': 'All'}
+        products = Product.objects.all().order_by('price')
+        category = {'name': 'все'}
     else:
-        category = Category.objects.get(pk=pk)
-        products = Product.objects.filter(category=category)
+        category = get_object_or_404(Category, pk=pk)
+        products = Product.objects.filter(category__pk=pk).order_by('price')
     content = {
         'products': products,
         'category': category,
