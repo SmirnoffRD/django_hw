@@ -11,5 +11,5 @@ categories = Category.objects.all()
 urlpatterns = [
     path('', main_view, name='main'),
     path('contacts/', contact_view, name='contacts'),
-    path('products/<str:pk>/', products_view, name='products'),
+    path('products/<int:pk>/', products_view, name='products'),
 ]

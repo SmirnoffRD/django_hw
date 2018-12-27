@@ -24,7 +24,7 @@ def contact_view(request):
 
 def products_view(request, pk):
     categories = Category.objects.all()
-    if pk == "0":
+    if pk == 0:
         products = Product.objects.all().order_by('price')
         category = {'name': 'все'}
     else:
