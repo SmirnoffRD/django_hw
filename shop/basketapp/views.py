@@ -47,7 +47,7 @@ def basket_edit(request, pk, value=0):
 
 
     return JsonResponse({'result': result})
-
+@login_required
 def basket_remove(request, pk):
     basket = get_basket(user=request.user)
 
@@ -64,7 +64,7 @@ def basket_remove(request, pk):
             old_basket_item[0].save()
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
+@login_required
 def basket_add(request, pk):
     basket = get_basket(user=request.user)
 
