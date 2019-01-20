@@ -70,6 +70,7 @@ def products_view(request, pk):
     sum_of_products = None
     price_of_products = None
     basket = get_basket(request.user)
+    r_product = get_hot_product()
     if basket:
         types_of_products = basket.types_quantity
         sum_of_products = basket.totall_quantity
@@ -88,7 +89,8 @@ def products_view(request, pk):
         'categories': categories,
         "types_of_products": types_of_products,
         "sum_of_products": sum_of_products,
-        "price_of_products": price_of_products
+        "price_of_products": price_of_products,
+        "r_product": r_product,
     }
 
     return render(request, 'mainapp/products.html', content)

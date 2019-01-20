@@ -45,6 +45,23 @@
 						</div>
 					</div>
 				{% endfor %}
+				<div class="products_box">
+					<div class="products_box_name">
+						Случайный продукт
+					</div>
+					<a href="{% url 'mainapp:product' r_product.pk %}" class="products_box_img">
+						<img src="{{r_product.image.url}}" alt="">
+					</a>
+					<div  class="products_box_name">
+						{{r_product.name}}
+					</div>
+					<div  class="products_box_description">
+						{{r_product.descrition}}
+					</div>
+					<div class="products_box_price">
+						{{r_product.price}}
+					</div>
+				</div>
 			</div>
 			<div class="related">
 				<div class="title clearfix">
