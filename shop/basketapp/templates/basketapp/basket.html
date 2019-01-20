@@ -3,34 +3,11 @@
 
 {% block content %}
     <div class="basket_list">
-        {% for item in items %}
-            <div class="basket_record">
-                <img src="{{ item.product.image.url }}" alt="{{ item.product.descrition }}">
-                <span class="category_name">{{ item.product.category.name }}</span> 
-                <span class="product_name">{{ item.product.name }}</span>
-                <span class="product_price">{{ item.product.price }}&nbspруб</span>
-                <input type="number" name="{{ item.pk }}" min="0" value="{{ item.quantity }}">
-                <span class="product_cost">{{ item.totall_price }}&nbspруб</span>
-                <a href="{% url 'basketapp:product_remove_all' item.product.pk %}" class="btn btn-round">
-                    удалить
-                </a>
-            </div>
-        {% endfor %}
-        
-        {% if basket %}
-            <div class="basket_summary">
-                В корзине {{ basket.totall_quantity }} товара(ов) общей стоимостью
-                {{ basket.totall_price }} руб
-            </div>
-        {% endif %}
-        
+        {% include 'basketapp/basket_inc.html' %}
         <button class="btn btn-round">
             <a href="{% url 'mainapp:main' %}">
                 на главную
             </a>
         </button>
     </div>
-    {% comment %} <script>
-        let document.getElementBy
-    </script> {% endcomment %}
 {% endblock %}

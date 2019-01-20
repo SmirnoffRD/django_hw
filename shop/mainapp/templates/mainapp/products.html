@@ -31,9 +31,9 @@
 			<div class="products_block">
 				{% for product in products %}
 					<div class="products_box">
-						<div  class="products_box_img">
+						<a href="{% url 'mainapp:product' product.pk %}" class="products_box_img">
 							<img src="{{product.image.url}}" alt="">
-						</div>
+						</a>
 						<div  class="products_box_name">
 							{{product.name}}
 						</div>
@@ -43,14 +43,6 @@
 						<div class="products_box_price">
 							{{product.price}}
 						</div>
-						{% if user.is_authenticated %}
-							<div>
-								<a href="{% url 'basketapp:product_add' pk=product.pk %}">ADD</a>
-							</div>
-							<div>
-								<a href="{% url 'basketapp:product_remove' pk=product.pk %}">DELL</a>
-							</div>
-						{% endif %}
 					</div>
 				{% endfor %}
 			</div>

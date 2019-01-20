@@ -1175,6 +1175,7 @@ td:first-child {
 
 .products_box_img{
 	width: inherit;
+	display: block;
 }
 
 .products_box_img img{

@@ -3,7 +3,7 @@ import os
 import random
 from django.shortcuts import render, get_object_or_404
 from shop.settings import STATICFILES_DIRS
-from basketapp.models import Basket
+from basketapp.models import Basket, OrderItem
 from .models import Category, Product
 
 
@@ -92,3 +92,28 @@ def products_view(request, pk):
     }
 
     return render(request, 'mainapp/products.html', content)
+
+def product_view(request, pk):
+    types_of_products = None
+    sum_of_products = None
+    price_of_products = None
+    order_item = None
+    basket = get_basket(request.user)
+    categories = Category.objects.all()
+    product = get_object_or_404(Product, pk=pk)
+    if basket:
+        types_of_products = basket.types_quantity
+        sum_of_products = basket.totall_quantity
+        price_of_products = basket.totall_price
+        order_item = OrderItem.objects.filter(basket=basket, product=product)
+
+    content = {
+        'product': product,
+        'categories': categories,
+        "types_of_products": types_of_products,
+        "sum_of_products": sum_of_products,
+        "price_of_products": price_of_products,
+        "order_item": order_item,
+    }
+
+    return render(request, 'mainapp/product.html', content)

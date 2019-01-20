@@ -1,0 +1,57 @@
+{% extends "mainapp/base.html" %}
+
+{% block title %}
+Каталог
+{% endblock %}
+
+{% block menu %}
+		<div class="hero-white">
+			<div class="header clearfix">
+					{% include "mainapp/inside_menu.html" %}
+			</div>
+		</div>
+{% endblock %}
+
+{% block content %}
+    <div class="links clearfix">
+        <ul class="links-menu">
+            <li><a href="{% url 'mainapp:products' pk=0 %}">ВСЕ</a></li>
+            {% for cat in categories %}
+                <li><a href="{% url 'mainapp:products' cat.pk %}" class="
+                {% if product.category.pk == cat.pk %}
+                    active
+                {% endif %}
+                ">
+                    {{cat.name}}
+                    </a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="products_block">
+        <div class="products_box">
+            <div  class="products_box_img">
+                <img src="{{product.image.url}}" alt="">
+            </div>
+            <div  class="products_box_name">
+                {{product.name}}
+            </div>
+            <div  class="products_box_description">
+                {{product.descrition}}
+            </div>
+            <div class="products_box_price">
+                {{product.price}}
+            </div>
+            <div class="products_box_price">
+                Колличество в корзине: {{ order_item.quantity }}
+            </div>
+            <form action="{% url 'basketapp:product_add' pk=product.pk %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Добавить в корзину</button>
+            </form>
+            <form action="{% url 'basketapp:product_remove' pk=product.pk %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Убрать из корзины</button>
+            </form>
+        </div>
+    </div>
+{% endblock  %}
