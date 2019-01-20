@@ -83,11 +83,25 @@ def basket_add(request, pk):
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
+# def basket_remove_all(request, pk):
+#     if request.method == 'POST':
+#         basket_item = get_object_or_404(OrderItem, pk=pk)
+#         basket_item.delete()
+#         print("request.META.get('HTTP_REFERER')", request.META.get('HTTP_REFERER'))
+#         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+#     else:
+#         raise Http404
+
+
 def basket_remove_all(request, pk):
-    if request.method == 'POST':
+    if request.is_ajax():
+        basket = get_basket(request.user)
         basket_item = get_object_or_404(OrderItem, pk=pk)
         basket_item.delete()
-        print("request.META.get('HTTP_REFERER')", request.META.get('HTTP_REFERER'))
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        items = OrderItem.objects.filter(basket=basket)
+        content = {"basket":basket, "items":items,}
+        result = render_to_string('basketapp/basket_inc.html', content)
     else:
-        raise Http404
+        print('1')
+        return Http404
+    return JsonResponse({'result': result})

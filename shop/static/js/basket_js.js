@@ -16,4 +16,18 @@ window.onload = function () {
     }
     event.preventDefault();
   });
+
+  $('.basket_list').on('click', 'button[type="submit"]', function(event) {
+    var targetForm = event.target;
+    if (targetForm) {
+      $.ajax({
+        url: "/basket/delete_all/" + targetForm.name + "/",
+        success: function(data) {
+          $('.basket_list').html(data.result);
+          console.log('ajax done');
+        },
+      });
+    }
+    event.preventDefault();
+  });
 }
