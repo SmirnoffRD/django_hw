@@ -2,7 +2,7 @@
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
-from django.http import JsonResponse, Http404
+from django.http import JsonResponse, Http404, HttpRequest
 from mainapp.models import Product
 from mainapp.views import get_basket
 from .models import OrderItem
@@ -96,14 +96,19 @@ def basket_add(request, pk):
 
 
 def basket_remove_all(request, pk):
-    if request.is_ajax():
-        basket = get_basket(request.user)
-        basket_item = get_object_or_404(OrderItem, pk=pk)
-        basket_item.delete()
-        items = OrderItem.objects.filter(basket=basket)
-        content = {"basket":basket, "items":items,}
-        result = render_to_string('basketapp/basket_inc.html', content)
-    else:
-        print('1')
-        return Http404
-    return JsonResponse({'result': result})
+    # if request.is_ajax():
+    #     basket = get_basket(request.user)
+    #     basket_item = get_object_or_404(OrderItem, pk=pk)
+    #     basket_item.delete()
+    #     items = OrderItem.objects.filter(basket=basket)
+    #     content = {"basket":basket, "items":items,}
+    #     result = render_to_string('basketapp/basket_inc.html', content)
+    # else:
+    #     print('1')
+    #     return Http404
+    # return JsonResponse({'result': result})
+
+    if request.method == 'POST':
+        data = request.data
+        print(data)
+
