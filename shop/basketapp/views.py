@@ -2,10 +2,11 @@
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
-from django.http import JsonResponse, Http404, HttpRequest
+from django.http import JsonResponse, Http404, HttpRequest, response
 from mainapp.models import Product
 from mainapp.views import get_basket
 from .models import OrderItem
+import json
 
 
 
@@ -71,11 +72,9 @@ def basket_add(request, pk):
     product = get_object_or_404(Product, pk=pk)
 
     old_basket_item = OrderItem.objects.filter(basket=basket, product=product)
-    print(old_basket_item)
     if old_basket_item:
         old_basket_item[0].quantity += 1
         old_basket_item[0].save()
-        print(old_basket_item[0].quantity)
     else:
         print('not')
         product = get_object_or_404(Product, pk=pk)
@@ -95,20 +94,19 @@ def basket_add(request, pk):
 #         raise Http404
 
 
-def basket_remove_all(request, pk):
-    # if request.is_ajax():
-    #     basket = get_basket(request.user)
-    #     basket_item = get_object_or_404(OrderItem, pk=pk)
-    #     basket_item.delete()
-    #     items = OrderItem.objects.filter(basket=basket)
-    #     content = {"basket":basket, "items":items,}
-    #     result = render_to_string('basketapp/basket_inc.html', content)
-    # else:
-    #     print('1')
-    #     return Http404
-    # return JsonResponse({'result': result})
-
+def basket_remove_all(request):
     if request.method == 'POST':
-        data = request.data
-        print(data)
-
+        basket = get_basket(request.user)
+        print(request.POST['pk'])
+        pk = request.POST['pk']
+        print(pk)
+        basket_item = OrderItem.objects.get(pk=pk)
+        basket_item.delete()
+        items = OrderItem.objects.filter(basket=basket)
+        content = {"basket":basket, "items":items,}
+        result = render_to_string('basketapp/basket_inc.html', content)
+    else:
+        print("ошибка")
+        raise Http404
+    
+    return JsonResponse({'result': result})
