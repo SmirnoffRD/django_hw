@@ -2,11 +2,10 @@
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
-from django.http import JsonResponse, Http404, HttpRequest, response
+from django.http import JsonResponse, Http404
 from mainapp.models import Product
 from mainapp.views import get_basket
 from .models import OrderItem
-import json
 
 
 
@@ -23,19 +22,14 @@ def basket_view(request):
 def basket_edit(request, pk, value=0):
     if request.is_ajax():
         basket = get_basket(user=request.user)
-        print('1')
         old_basket_item = get_object_or_404(OrderItem, pk=pk)
         if old_basket_item:
-            print('2')
             if value == 0:
-                print('3')
                 OrderItem.objects.filter(pk=pk).delete()
             else:
-                print('4')
                 old_basket_item.quantity = value
                 old_basket_item.save()
         else:
-            print('5')
             product = get_object_or_404(Product, pk=pk)
             new_basket_item = OrderItem(basket=basket, product=product)
             new_basket_item.quantity = 1
@@ -76,7 +70,6 @@ def basket_add(request, pk):
         old_basket_item[0].quantity += 1
         old_basket_item[0].save()
     else:
-        print('not')
         product = get_object_or_404(Product, pk=pk)
         new_basket_item = OrderItem(basket=basket, product=product)
         new_basket_item.quantity = 1
@@ -84,29 +77,19 @@ def basket_add(request, pk):
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-# def basket_remove_all(request, pk):
-#     if request.method == 'POST':
-#         basket_item = get_object_or_404(OrderItem, pk=pk)
-#         basket_item.delete()
-#         print("request.META.get('HTTP_REFERER')", request.META.get('HTTP_REFERER'))
-#         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-#     else:
-#         raise Http404
-
-
 def basket_remove_all(request):
+    '''
+    принимает пост ajax пост запрос от basket
+    и удаляет объек товара в корзине полностью
+    '''
     if request.method == 'POST':
         basket = get_basket(request.user)
-        print(request.POST['pk'])
         pk = request.POST['pk']
-        print(pk)
         basket_item = OrderItem.objects.get(pk=pk)
         basket_item.delete()
         items = OrderItem.objects.filter(basket=basket)
         content = {"basket":basket, "items":items,}
         result = render_to_string('basketapp/basket_inc.html', content)
     else:
-        print("ошибка")
-        raise Http404
-    
+        return Http404
     return JsonResponse({'result': result})
