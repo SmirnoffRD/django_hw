@@ -71,15 +71,17 @@ def basket_add(request, pk):
     product = get_object_or_404(Product, pk=pk)
 
     old_basket_item = OrderItem.objects.filter(basket=basket, product=product)
-    if not old_basket_item:
+    print(old_basket_item)
+    if old_basket_item:
+        old_basket_item[0].quantity += 1
+        old_basket_item[0].save()
+        print(old_basket_item[0].quantity)
+    else:
+        print('not')
         product = get_object_or_404(Product, pk=pk)
         new_basket_item = OrderItem(basket=basket, product=product)
         new_basket_item.quantity = 1
         new_basket_item.save()
-    else:
-        print(old_basket_item[0].quantity)
-        old_basket_item[0].quantity += 1
-        print(old_basket_item[0].quantity)
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 

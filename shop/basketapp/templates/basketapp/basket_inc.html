@@ -7,7 +7,6 @@
         <input type="number" name="{{ item.pk }}" min="0" value="{{ item.quantity }}">
         <span class="product_cost">{{ item.totall_price }}&nbspруб</span>
         <form action="{% url 'basketapp:product_remove_all' item.pk %} " name="{{ item.pk }}" method="post">
-            {% csrf_token %}
             <button type="submit" name="{{ item.pk }}">Удалить</button>
         </form>
     </div>
