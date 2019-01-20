@@ -1,7 +1,7 @@
 window.onload = function () {
   
   
-  $('.basket_record').on('click', 'input[type="number"]', function(event) {
+  $('.basket_list').on('click', 'input[type="number"]', function(event) {
     var target_href = event.target;
 
     if (target_href) {
@@ -9,7 +9,7 @@ window.onload = function () {
         url: "/basket/edit/" + target_href.name + "/" + target_href.value + "/",
 
         success: function(data) {
-          $('.basket_record').html(data.result);
+          $('.basket_list').html(data.result);
           console.log('ajax done');
         },
       });
