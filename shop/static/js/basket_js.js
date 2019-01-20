@@ -1,7 +1,7 @@
 window.onload = function () {
   
   
-  $('.basket_list').on('click', 'input[type="number"]', function(event) {
+  $('.basket_list').on('change', 'input[type="number"]', function(event) {
     var target_href = event.target;
 
     if (target_href) {
