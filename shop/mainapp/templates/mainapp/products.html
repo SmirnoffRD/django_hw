@@ -1,5 +1,5 @@
 {% extends "mainapp/base.html" %}
-{{category|length}}
+
 {% block title %}
 Каталог
 {% endblock %}
@@ -8,7 +8,6 @@
 		<div class="hero-white">
 			<div class="header clearfix">
 					{% include "mainapp/inside_menu.html" %}
-                <a href="#" class="basket"></a>
 			</div>
 		</div>
 {% endblock %}
@@ -29,17 +28,6 @@
 					{% endfor %}
 				</ul>
 			</div>
-			{% if user.is_authenticated %}
-				<div>
-					Наименований в корзине: {{types_of_products}}
-				</div>
-				<div>
-					Всего продуктов: {{sum_of_products}}
-				</div>
-				<div>
-					Общая цена: {{price_of_products}}
-				</div>
-			{% endif %}
 			<div class="products_block">
 				{% for product in products %}
 					<div class="products_box">
@@ -58,6 +46,9 @@
 						{% if user.is_authenticated %}
 							<div>
 								<a href="{% url 'basketapp:product_add' pk=product.pk %}">ADD</a>
+							</div>
+							<div>
+								<a href="{% url 'basketapp:product_remove' pk=product.pk %}">DELL</a>
 							</div>
 						{% endif %}
 					</div>

@@ -43,7 +43,6 @@ def logout(request):
 
 def edit_view(request):
     title = 'Измение профиля'
-    
     if request.method == 'POST':
         edit_form = CustomUser_EditForm(request.POST, request.FILES, instance=request.user)
 

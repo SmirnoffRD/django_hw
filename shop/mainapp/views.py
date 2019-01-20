@@ -1,41 +1,79 @@
-from django.shortcuts import render, get_object_or_404
-from shop.settings import STATICFILES_DIRS
 import json
 import os
+import random
+from django.shortcuts import render, get_object_or_404
+from shop.settings import STATICFILES_DIRS
+from basketapp.models import Basket
 from .models import Category, Product
-from django.urls import reverse
-from basketapp.models import Basket, OrderItem
 
 
+
+def get_basket(user):
+    if user.is_authenticated:
+        basket = Basket.objects.filter(user=user)
+        if not basket:
+            basket = Basket(user)
+            basket.save()
+        return basket[0]
+    return False
+
+def get_hot_product():
+    products = Product.objects.all()
+    return random.sample(list(products), 1)[0]
+
+def get_same_products(product):
+    same_products = Product.objects.filter(category=product.category).exclude(pk=product.pk)[:3]
+    return same_products
 
 
 
 # Create your views here.
 def main_view(request):
-    
-    return render(request, 'mainapp/index.html')
+    types_of_products = None
+    sum_of_products = None
+    price_of_products = None
+    basket = get_basket(request.user)
+    if basket:
+        types_of_products = basket.types_quantity
+        sum_of_products = basket.totall_quantity
+        price_of_products = basket.totall_price
+    content = {
+        "types_of_products": types_of_products,
+        "sum_of_products": sum_of_products,
+        "price_of_products": price_of_products
+    }
+    return render(request, 'mainapp/index.html', content)
 
 def contact_view(request):
+    types_of_products = None
+    sum_of_products = None
+    price_of_products = None
+    basket = get_basket(request.user)
+    if basket:
+        types_of_products = basket.types_quantity
+        sum_of_products = basket.totall_quantity
+        price_of_products = basket.totall_price
     path = os.path.join(STATICFILES_DIRS[0], 'contacts.json')
     with open(path) as data:
         cont_info = json.load(data)
+    content = {
+        "continfo": cont_info,
+        "types_of_products": types_of_products,
+        "sum_of_products": sum_of_products,
+        "price_of_products": price_of_products
+    }
 
-    return render(request, 'mainapp/contact.html', {"continfo": cont_info,})
+    return render(request, 'mainapp/contact.html', content)
 
 def products_view(request, pk):
-    if request.user.is_authenticated:
-        basket = Basket.objects.filter(user=request.user)[0]
-        if not basket:
-            basket = Basket(user=request.user)
-            basket.save()
-        basket_items = OrderItem.objects.filter(basket=basket)
-        if basket_items:
-            types_of_products = len(basket_items)
-            sum_of_products = 0
-            price_of_products = 0
-            for item in basket_items:
-                sum_of_products += item.quantity
-                price_of_products += item.product.price
+    types_of_products = None
+    sum_of_products = None
+    price_of_products = None
+    basket = get_basket(request.user)
+    if basket:
+        types_of_products = basket.types_quantity
+        sum_of_products = basket.totall_quantity
+        price_of_products = basket.totall_price
 
     categories = Category.objects.all()
     if pk == 0:
@@ -48,11 +86,9 @@ def products_view(request, pk):
         'products': products,
         'category': category,
         'categories': categories,
-        'basket': basket,
         "types_of_products": types_of_products,
         "sum_of_products": sum_of_products,
         "price_of_products": price_of_products
     }
 
     return render(request, 'mainapp/products.html', content)
-    

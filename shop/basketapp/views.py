@@ -1,26 +1,20 @@
 
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
-from django.urls import reverse
-from authapp.models import Custom_User
-from .models import Basket, OrderItem
 from mainapp.models import Product
+from mainapp.views import get_basket
+from .models import OrderItem
+
 
 # Create your views here.
 def basket_view(request):
-    basket = Basket.objects.filter(user=request.user)
-    if not basket:
-        basket = Basket(user=request.user)
-        basket.save()
-
-    content = {"basket":basket[0]}
+    basket = get_basket(user=request.user)
+    items = OrderItem.objects.filter(basket=basket)
+    content = {"basket":basket, "items":items,}
     return render(request, 'basketapp/basket.html', content)
 
 
 def basket_add(request, pk):
-    basket = Basket.objects.filter(user=request.user)[0]
-    if not basket:
-        basket = Basket(user=request.user)
-        basket.save()
+    basket = get_basket(user=request.user)
 
     product = get_object_or_404(Product, pk=pk)
     old_basket_item = OrderItem.objects.filter(basket=basket, product=product)
@@ -35,15 +29,27 @@ def basket_add(request, pk):
 
 
 def basket_remove(request, pk):
-    basket = Basket.objects.filter(user=request.user)
-
+    basket = get_basket(user=request.user)
+    print(pk)
     product = get_object_or_404(Product, pk=pk)
 
     old_basket_item = OrderItem.objects.filter(basket=basket, product=product)
-    old_basket_item[0].quantity -= 1
-    old_basket_item[0].save()
-    if old_basket_item[0].quantity == 0:
-        old_basket_item[0].delete()
-        old_basket_item[0].save()
-    content ={"basket":basket[0]}
-    return render(request, 'basketapp/basket.html', content)
+    if not old_basket_item:
+        pass
+    else:
+        if old_basket_item[0].quantity == 1:
+            old_basket_item.delete()
+        else:
+            old_basket_item[0].quantity -= 1
+            old_basket_item[0].save()
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+def basket_remove_all(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    basket = get_basket(user=request.user)
+    basket_item = OrderItem.objects.filter(basket=basket, product=product)
+    print(basket_item)
+    basket_item.delete()
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
